@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://cjcyy51wg5x2y"]
+
+[ext_resource type="Texture2D" uid="uid://dse8reu3d6edd" path="res://Enemies/Bee/bee.png" id="1_syflb"]
+[ext_resource type="Script" path="res://Enemies/Bee/bee.gd" id="1_beegd"]
+[ext_resource type="PackedScene" path="res://Combat/health_bar.tscn" id="3_hbar"]
+[ext_resource type="Script" path="res://Combat/hurtbox.gd" id="4_hurt"]
+[ext_resource type="Script" path="res://Combat/hitbox.gd" id="5_hit"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i1mqf"]
+atlas = ExtResource("1_syflb")
+region = Rect2(0, 0, 37, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_it3wg"]
+atlas = ExtResource("1_syflb")
+region = Rect2(37, 0, 37, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ow5o8"]
+atlas = ExtResource("1_syflb")
+region = Rect2(74, 0, 37, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y7h0u"]
+atlas = ExtResource("1_syflb")
+region = Rect2(111, 0, 37, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tfvw2"]
+atlas = ExtResource("1_syflb")
+region = Rect2(148, 0, 37, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5tu01"]
+atlas = ExtResource("1_syflb")
+region = Rect2(185, 0, 37, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8w6u6"]
+atlas = ExtResource("1_syflb")
+region = Rect2(222, 0, 37, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5ks3"]
+atlas = ExtResource("1_syflb")
+region = Rect2(259, 0, 37, 39)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ns37h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i1mqf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_it3wg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ow5o8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y7h0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tfvw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5tu01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8w6u6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5ks3")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bee_body"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bee_hurt"]
+radius = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bee_hit"]
+radius = 7.0
+
+[node name="Bee" type="CharacterBody2D" unique_id=1110552815]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_beegd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=334617398]
+sprite_frames = SubResource("SpriteFrames_ns37h")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bee_body")
+
+[node name="HealthBar" parent="." instance=ExtResource("3_hbar")]
+position = Vector2(0, -14)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("4_hurt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_bee_hurt")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("5_hit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_bee_hit")

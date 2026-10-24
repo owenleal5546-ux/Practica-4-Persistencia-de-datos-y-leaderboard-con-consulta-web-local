@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://dy4554uucwhh3"]
+
+[ext_resource type="Texture2D" uid="uid://pe0j6hn6w5tv" path="res://Enemies/PiranahPlant/piranha-plant-attack.png" id="1_40odx"]
+[ext_resource type="Script" path="res://Enemies/PiranahPlant/piranah_plant.gd" id="1_pgd"]
+[ext_resource type="Texture2D" uid="uid://j3b7x5pilwl3" path="res://Enemies/PiranahPlant/piranha-plant.png" id="1_ngqob"]
+[ext_resource type="PackedScene" path="res://Combat/health_bar.tscn" id="3_hbar"]
+[ext_resource type="Script" path="res://Combat/hurtbox.gd" id="4_hurt"]
+[ext_resource type="Script" path="res://Combat/hitbox.gd" id="5_hit"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ybue"]
+atlas = ExtResource("1_40odx")
+region = Rect2(0, 0, 61, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ar5fv"]
+atlas = ExtResource("1_40odx")
+region = Rect2(61, 0, 61, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ijop4"]
+atlas = ExtResource("1_40odx")
+region = Rect2(122, 0, 61, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_na475"]
+atlas = ExtResource("1_40odx")
+region = Rect2(183, 0, 61, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvfd5"]
+atlas = ExtResource("1_ngqob")
+region = Rect2(0, 0, 61, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w5ptk"]
+atlas = ExtResource("1_ngqob")
+region = Rect2(61, 0, 61, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0pteg"]
+atlas = ExtResource("1_ngqob")
+region = Rect2(122, 0, 61, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_huj8n"]
+atlas = ExtResource("1_ngqob")
+region = Rect2(183, 0, 61, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vua6t"]
+atlas = ExtResource("1_ngqob")
+region = Rect2(244, 0, 61, 45)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yo2xw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ybue")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ar5fv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ijop4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ijop4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_na475")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_na475")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_na475")
+}],
+"loop": 1,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvfd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w5ptk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0pteg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_huj8n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vua6t")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 12.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plant_body"]
+size = Vector2(24, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plant_hurt"]
+size = Vector2(26, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plant_hit"]
+size = Vector2(22, 28)
+
+[node name="PiranahPlant" type="CharacterBody2D" unique_id=483632689]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_pgd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=891917185]
+sprite_frames = SubResource("SpriteFrames_yo2xw")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7)
+shape = SubResource("RectangleShape2D_plant_body")
+
+[node name="HealthBar" parent="." instance=ExtResource("3_hbar")]
+position = Vector2(0, -18)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("4_hurt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 7)
+shape = SubResource("RectangleShape2D_plant_hurt")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("5_hit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 7)
+shape = SubResource("RectangleShape2D_plant_hit")

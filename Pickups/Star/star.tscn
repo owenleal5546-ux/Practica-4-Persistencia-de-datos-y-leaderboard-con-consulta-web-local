@@ -1,0 +1,71 @@
+[gd_scene load_steps=11 format=3 uid="uid://dh3uoh5kn40gj"]
+
+[ext_resource type="Script" path="res://Pickups/Star/star.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dwvcqscalbvcb" path="res://Pickups/Star/star.png" id="1_ceutt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_star"]
+radius = 6.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dc3es"]
+atlas = ExtResource("1_ceutt")
+region = Rect2(0, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sv3kl"]
+atlas = ExtResource("1_ceutt")
+region = Rect2(13, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eu0og"]
+atlas = ExtResource("1_ceutt")
+region = Rect2(26, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0knpp"]
+atlas = ExtResource("1_ceutt")
+region = Rect2(39, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sotle"]
+atlas = ExtResource("1_ceutt")
+region = Rect2(52, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dve1"]
+atlas = ExtResource("1_ceutt")
+region = Rect2(65, 0, 13, 13)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3q2sp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dc3es")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sv3kl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eu0og")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0knpp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sotle")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4dve1")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 6.0
+}]
+
+[node name="Star" type="Area2D" unique_id=34430178]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=945089668]
+sprite_frames = SubResource("SpriteFrames_3q2sp")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=581938102]
+shape = SubResource("CircleShape2D_star")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunny Land Forest - Dashboard de Partidas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0b0f19;
+            --bg-surface: #111827;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(31, 41, 55, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(16, 185, 129, 0.3);
+            
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            
+            --accent-emerald: #10b981;
+            --accent-emerald-glow: rgba(16, 185, 129, 0.25);
+            --accent-amber: #f59e0b;
+            --accent-amber-glow: rgba(245, 158, 11, 0.25);
+            --accent-indigo: #6366f1;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 20px -5px var(--accent-emerald-glow);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            line-height: 1.5;
+            padding-bottom: 50px;
+        }
+
+        /* Top Header */
+        header {
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 0 15px var(--accent-emerald-glow);
+        }
+
+        .brand-text h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .brand-text p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .db-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 500;
+            color: #34d399;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 1300px;
+            margin: 28px auto;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* KPI Cards Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .kpi-emerald::before { background: linear-gradient(90deg, #10b981, #34d399); }
+        .kpi-amber::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .kpi-indigo::before { background: linear-gradient(90deg, #6366f1, #818cf8); }
+        .kpi-cyan::before { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+
+        .kpi-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .kpi-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .kpi-icon {
+            font-size: 20px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-sm);
+        }
+
+        .kpi-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .kpi-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Filter & Controls Bar */
+        .controls-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .search-wrapper {
+            position: relative;
+            min-width: 260px;
+            flex: 1;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .input-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px 10px 38px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .input-control:focus {
+            outline: none;
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        .select-control {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .select-control:focus {
+            outline: none;
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        .select-control option {
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+        }
+
+        .controls-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .auto-refresh-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .auto-refresh-label input {
+            accent-color: var(--accent-emerald);
+            cursor: pointer;
+        }
+
+        /* Table Card */
+        .table-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .table-header-box {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .row-count-badge {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 14px 20px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.15s ease;
+        }
+
+        th:hover {
+            color: var(--text-primary);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: var(--bg-card-hover);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-id {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            font-family: monospace;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .badge-level1 {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-level2 {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .badge-level-other {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .time-cell {
+            font-family: 'Outfit', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .coins-cell {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            color: #fbbf24;
+            font-size: 14px;
+        }
+
+        .user-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .user-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Empty state */
+        .empty-state {
+            padding: 50px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 40px;
+            margin-bottom: 4px;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 1300px;
+            margin: 30px auto 0;
+            padding: 0 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 12px;
+            gap: 12px;
+        }
+
+        .db-path-info {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            word-break: break-all;
+        }
+
+        /* Quick Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(17, 24, 39, 0.95);
+            border: 1px solid var(--accent-emerald);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 999;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .controls-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-icon">🌲</div>
+                <div class="brand-text">
+                    <h1>Sunny Land Forest</h1>
+                    <p>Dashboard de Sesiones & Telemetría SQLite</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="db-badge">
+                    <span class="pulse-dot"></span>
+                    <span>SQLite Conectado</span>
+                </div>
+                <button class="btn btn-primary" id="btnRefresh" onclick="fetchData(true)">
+                    <span>🔄 Actualizar</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- KPI Cards -->
+        <section class="kpi-grid">
+            <div class="kpi-card kpi-emerald">
+                <div class="kpi-header">
+                    <span class="kpi-title">Partidas Terminadas</span>
+                    <span class="kpi-icon">🎮</span>
+                </div>
+                <div class="kpi-value" id="kpiTotalSessions">0</div>
+                <div class="kpi-subtitle">
+                    <span>Sesiones registradas en SQLite</span>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-amber">
+                <div class="kpi-header">
+                    <span class="kpi-title">Monedas Recolectadas</span>
+                    <span class="kpi-icon">🪙</span>
+                </div>
+                <div class="kpi-value" id="kpiTotalCoins">0</div>
+                <div class="kpi-subtitle">
+                    <span>Promedio: <strong id="kpiAvgCoins">0.0</strong> por partida</span>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-cyan">
+                <div class="kpi-header">
+                    <span class="kpi-title">Mejor Tiempo (Récord)</span>
+                    <span class="kpi-icon">⚡</span>
+                </div>
+                <div class="kpi-value" id="kpiBestTime">--:--</div>
+                <div class="kpi-subtitle" id="kpiBestLevel">
+                    <span>Sin registros aún</span>
+                </div>
+            </div>
+
+            <div class="kpi-card kpi-indigo">
+                <div class="kpi-header">
+                    <span class="kpi-title">Tiempo Promedio</span>
+                    <span class="kpi-icon">⏱️</span>
+                </div>
+                <div class="kpi-value" id="kpiAvgTime">0.0s</div>
+                <div class="kpi-subtitle">
+                    <span>Duración media de partida</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter & Search Bar -->
+        <section class="controls-card">
+            <div class="filter-group">
+                <div class="search-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" class="input-control" placeholder="Buscar por nivel, usuario, fecha o ID..." oninput="applyFilters()">
+                </div>
+
+                <select id="levelFilter" class="select-control" onchange="applyFilters()">
+                    <option value="">Todos los Niveles</option>
+                </select>
+
+                <select id="sortFilter" class="select-control" onchange="applyFilters()">
+                    <option value="date_desc">📅 Más recientes primero</option>
+                    <option value="date_asc">📅 Más antiguas primero</option>
+                    <option value="time_asc">⚡ Tiempo más rápido</option>
+                    <option value="time_desc">⏳ Tiempo más largo</option>
+                    <option value="coins_desc">🪙 Más monedas</option>
+                    <option value="coins_asc">🪙 Menos monedas</option>
+                </select>
+            </div>
+
+            <div class="controls-right">
+                <label class="auto-refresh-label">
+                    <input type="checkbox" id="autoRefreshToggle" checked onchange="toggleAutoRefresh()">
+                    <span>Auto-refresco (5s)</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Sessions Table -->
+        <section class="table-card">
+            <div class="table-header-box">
+                <div class="table-title">
+                    <span>Historial de Partidas</span>
+                    <span class="row-count-badge" id="rowCountBadge">0 registros</span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th onclick="setSort('id')">ID</th>
+                            <th onclick="setSort('usuario')">Jugador</th>
+                            <th onclick="setSort('nivel')">Nivel</th>
+                            <th onclick="setSort('tiempo_transcurrido')">Tiempo Transcurrido</th>
+                            <th onclick="setSort('monedas_recolectadas')">Monedas Recolectadas</th>
+                            <th onclick="setSort('fecha')">Fecha y Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sessionsTableBody">
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <div class="empty-icon">⏳</div>
+                                    <p>Cargando datos de SQLite...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer info -->
+    <footer>
+        <div>
+            <span>Base de datos activa:</span>
+            <span class="db-path-info" id="dbPathDisplay">{{ db_path }}</span>
+        </div>
+        <div>
+            <span>Sunny Land Forest Game Dashboard • SQLite + Flask</span>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span>🔄</span>
+        <span id="toastMsg">Datos actualizados</span>
+    </div>
+
+    <script>
+        let allSessions = [];
+        let autoRefreshTimer = null;
+        let lastKnownCount = 0;
+
+        function formatSeconds(secs) {
+            if (secs === null || secs === undefined || isNaN(secs)) return '--:--';
+            const totalSec = Math.floor(secs);
+            const mins = Math.floor(totalSec / 60);
+            const remSec = totalSec % 60;
+            const millis = Math.floor((secs - totalSec) * 100);
+            return `${String(mins).padStart(2, '0')}:${String(remSec).padStart(2, '0')}.${String(millis).padStart(2, '0')}`;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        async function fetchData(manual = false) {
+            try {
+                const res = await fetch('/api/sessions');
+                if (!res.ok) throw new Error('Error al conectar con la API');
+                const data = await res.json();
+                
+                const prevCount = allSessions.length;
+                allSessions = data.sessions || [];
+                
+                if (data.db_path) {
+                    document.getElementById('dbPathDisplay').textContent = data.db_path;
+                }
+
+                updateStats(data.stats || {});
+                updateLevelDropdown(allSessions);
+                applyFilters();
+
+                if (manual) {
+                    showToast('Datos sincronizados con SQLite');
+                } else if (allSessions.length > prevCount && prevCount > 0) {
+                    showToast(`¡Nueva partida registrada! (Total: ${allSessions.length})`);
+                }
+            } catch (err) {
+                console.error('Error fetching data:', err);
+                if (manual) showToast('Error al conectar con SQLite');
+            }
+        }
+
+        function updateStats(stats) {
+            document.getElementById('kpiTotalSessions').textContent = stats.total_sessions || 0;
+            document.getElementById('kpiTotalCoins').textContent = stats.total_coins || 0;
+            document.getElementById('kpiAvgCoins').textContent = (stats.avg_coins || 0).toFixed(1);
+            
+            if (stats.best_time_overall && stats.best_time_overall < 999999) {
+                document.getElementById('kpiBestTime').textContent = formatSeconds(stats.best_time_overall);
+                document.getElementById('kpiBestLevel').innerHTML = `<span>En <strong>${stats.best_level || 'Nivel'}</strong> (${stats.best_time_overall.toFixed(2)}s)</span>`;
+            } else {
+                document.getElementById('kpiBestTime').textContent = '--:--';
+                document.getElementById('kpiBestLevel').innerHTML = `<span>Sin partidas completadas</span>`;
+            }
+
+            document.getElementById('kpiAvgTime').textContent = stats.avg_time ? `${stats.avg_time.toFixed(1)}s` : '0.0s';
+        }
+
+        function updateLevelDropdown(sessions) {
+            const dropdown = document.getElementById('levelFilter');
+            const currentSelected = dropdown.value;
+            const levels = Array.from(new Set(sessions.map(s => s.nivel).filter(Boolean))).sort();
+
+            dropdown.innerHTML = '<option value="">Todos los Niveles</option>';
+            levels.forEach(lvl => {
+                const opt = document.createElement('option');
+                opt.value = lvl;
+                opt.textContent = lvl;
+                if (lvl === currentSelected) opt.selected = true;
+                dropdown.appendChild(opt);
+            });
+        }
+
+        function applyFilters() {
+            const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+            const levelVal = document.getElementById('levelFilter').value;
+            const sortVal = document.getElementById('sortFilter').value;
+
+            let filtered = allSessions.filter(s => {
+                if (levelVal && s.nivel !== levelVal) return false;
+                if (searchVal) {
+                    const matchText = `${s.id} ${s.usuario} ${s.nivel} ${s.fecha} ${s.tiempo_transcurrido}s`.toLowerCase();
+                    if (!matchText.includes(searchVal)) return false;
+                }
+                return true;
+            });
+
+            // Sorting
+            filtered.sort((a, b) => {
+                switch (sortVal) {
+                    case 'date_desc': return new Date(b.fecha) - new Date(a.fecha);
+                    case 'date_asc': return new Date(a.fecha) - new Date(b.fecha);
+                    case 'time_asc': return a.tiempo_transcurrido - b.tiempo_transcurrido;
+                    case 'time_desc': return b.tiempo_transcurrido - a.tiempo_transcurrido;
+                    case 'coins_desc': return b.monedas_recolectadas - a.monedas_recolectadas;
+                    case 'coins_asc': return a.monedas_recolectadas - b.monedas_recolectadas;
+                    default: return b.id - a.id;
+                }
+            });
+
+            renderTable(filtered);
+        }
+
+        function setSort(field) {
+            const sortFilter = document.getElementById('sortFilter');
+            if (field === 'tiempo_transcurrido') {
+                sortFilter.value = sortFilter.value === 'time_asc' ? 'time_desc' : 'time_asc';
+            } else if (field === 'monedas_recolectadas') {
+                sortFilter.value = sortFilter.value === 'coins_desc' ? 'coins_asc' : 'coins_desc';
+            } else if (field === 'fecha' || field === 'id') {
+                sortFilter.value = sortFilter.value === 'date_desc' ? 'date_asc' : 'date_desc';
+            }
+            applyFilters();
+        }
+
+        function getLevelBadgeClass(nivel) {
+            if (!nivel) return 'badge-level-other';
+            const lower = nivel.toLowerCase();
+            if (lower.includes('1') || lower.includes('world')) return 'badge-level1';
+            if (lower.includes('2')) return 'badge-level2';
+            return 'badge-level-other';
+        }
+
+        function renderTable(sessions) {
+            const tbody = document.getElementById('sessionsTableBody');
+            const countBadge = document.getElementById('rowCountBadge');
+            countBadge.textContent = `${sessions.length} registro${sessions.length === 1 ? '' : 's'}`;
+
+            if (sessions.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">📂</div>
+                                <p>No se encontraron partidas con los filtros seleccionados.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = sessions.map(s => {
+                const userInitials = (s.usuario || 'J').substring(0, 2).toUpperCase();
+                const levelBadgeClass = getLevelBadgeClass(s.nivel);
+                const formattedTime = formatSeconds(s.tiempo_transcurrido);
+                
+                return `
+                    <tr>
+                        <td><span class="badge-id">#${s.id}</span></td>
+                        <td>
+                            <div class="user-tag">
+                                <div class="user-avatar">${userInitials}</div>
+                                <span>${s.usuario || 'Jugador'}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge ${levelBadgeClass}">
+                                🌲 ${s.nivel || 'Nivel'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="time-cell">${formattedTime} <span style="font-size: 11px; color: var(--text-muted); font-weight: 400;">(${s.tiempo_transcurrido.toFixed(2)}s)</span></div>
+                        </td>
+                        <td>
+                            <div class="coins-cell">
+                                <span>🪙</span>
+                                <span>${s.monedas_recolectadas}</span>
+                            </div>
+                        </td>
+                        <td style="color: var(--text-secondary); font-size: 12px;">
+                            ${s.fecha || '-'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function toggleAutoRefresh() {
+            const toggle = document.getElementById('autoRefreshToggle');
+            if (toggle.checked) {
+                if (!autoRefreshTimer) {
+                    autoRefreshTimer = setInterval(() => fetchData(false), 5000);
+                }
+            } else {
+                if (autoRefreshTimer) {
+                    clearInterval(autoRefreshTimer);
+                    autoRefreshTimer = null;
+                }
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+            toggleAutoRefresh();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://8dbsyumfmwut"]
+
+[ext_resource type="Script" uid="uid://6t8qb8ljxpor" path="res://Enemies/Slug/Slug.gd" id="1_1f8ab"]
+[ext_resource type="Texture2D" uid="uid://cjv7ufvnynqyj" path="res://Enemies/Slug/slug.png" id="1_3aame"]
+[ext_resource type="PackedScene" path="res://Combat/health_bar.tscn" id="3_hbar"]
+[ext_resource type="Script" path="res://Combat/hurtbox.gd" id="4_hurt"]
+[ext_resource type="Script" path="res://Combat/hitbox.gd" id="5_hit"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtyug"]
+atlas = ExtResource("1_3aame")
+region = Rect2(0, 0, 32, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b08h3"]
+atlas = ExtResource("1_3aame")
+region = Rect2(32, 0, 32, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nggxq"]
+atlas = ExtResource("1_3aame")
+region = Rect2(64, 0, 32, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hmfut"]
+atlas = ExtResource("1_3aame")
+region = Rect2(96, 0, 32, 21)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dwyt2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtyug")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b08h3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nggxq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hmfut")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4meww"]
+size = Vector2(20, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_slug_hurt"]
+size = Vector2(20, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_slug_hit"]
+size = Vector2(16, 8)
+
+[node name="Slug" type="CharacterBody2D" unique_id=2092227163]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_1f8ab")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=121362096]
+sprite_frames = SubResource("SpriteFrames_dwyt2")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2144095534]
+position = Vector2(0, 4.5)
+shape = SubResource("RectangleShape2D_4meww")
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1841311460]
+target_position = Vector2(30, 0)
+
+[node name="HealthBar" parent="." instance=ExtResource("3_hbar")]
+position = Vector2(0, -9)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("4_hurt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 4.5)
+shape = SubResource("RectangleShape2D_slug_hurt")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("5_hit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_slug_hit")

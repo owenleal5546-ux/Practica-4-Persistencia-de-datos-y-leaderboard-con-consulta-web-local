@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://cgameover12345"]
+
+[ext_resource type="Script" path="res://Scenes/game_over.gd" id="1_gameover_script"]
+
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gameover_script")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18, 0.05, 0.07, 0.92)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="GameOverTitle" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(1, 0.25, 0.25, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+text = "¡GAME OVER!"
+horizontal_alignment = 1
+
+[node name="SubTitle" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.9, 0.8, 0.8, 1)
+text = "Has sido derrotado"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="RetryButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(230, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "REINTENTAR"
+
+[node name="MainMenuButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(230, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "MENÚ PRINCIPAL"
